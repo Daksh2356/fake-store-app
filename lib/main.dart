@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:readmore/readmore.dart';
 
 void main() {
   runApp(NewApp());
@@ -33,7 +34,7 @@ class _NewAppState extends State<NewApp> {
   void initState() {
     super.initState();
     googleFontsPending = GoogleFonts.pendingFonts([
-      GoogleFonts.roboto(),
+      GoogleFonts.roboto(fontWeight: FontWeight.bold),
       GoogleFonts.montserrat(fontStyle: FontStyle.italic),
     ]);
     fetchProducts(); // Fetch products when the app starts
@@ -41,10 +42,8 @@ class _NewAppState extends State<NewApp> {
 
   @override
   Widget build(BuildContext context) {
-    final counterTextStyle = GoogleFonts.roboto(
-      textStyle: Theme.of(context).textTheme.displaySmall,
-  fontSize: 16,
-    );
+    final counterTextStyle = GoogleFonts.racingSansOne(
+        textStyle: Theme.of(context).textTheme.displaySmall, fontSize: 14);
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -62,12 +61,27 @@ class _NewAppState extends State<NewApp> {
                 subtitle: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Price: \$${products[index]['price']}'),
-                    Text('Category: ${products[index]['category']}'),
                     Text(
+                      'Price: ${products[index]['price']}',
+                      style: const TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                    Text(
+                      'Category: ${products[index]['category']}',
+                      style: const TextStyle(fontStyle: FontStyle.italic),
+                    ),
+                    ReadMoreText(
                       'Description: ${products[index]['description']}',
+                      trimLines: 2,
+                      colorClickableText: Colors.pink,
+                      trimMode: TrimMode.Line,
+                      trimCollapsedText: ' Show more ',
+                      trimExpandedText: ' Show less ',
+                      lessStyle: TextStyle(
+                          color: Colors.blueGrey[500], fontWeight: FontWeight.bold, decoration: TextDecoration.underline),
+                      moreStyle: TextStyle(
+                          color: Colors.blue[500], fontWeight: FontWeight.bold),
+
                       style: counterTextStyle,
-                      
                     ),
                     Row(
                       children: [
